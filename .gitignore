@@ -1,0 +1,6 @@
+*_ENV.sh
+terraform.tfvars
+terraform.tfstate*
+.terraform*
+*.tf.json
+
