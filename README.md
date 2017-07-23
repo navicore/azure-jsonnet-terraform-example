@@ -27,6 +27,12 @@ subnets, network security groups,  and a bastion host.
     ./deploy.sh
     ```
 
+The above steps generate this network:
+
+![PlantUML](examples/seq-mycloudexample.png)
+
+Above diagram created by [azuml](https://github.com/navicore/azuml)
+
 # WHY
 
 I recently had to add a lot of NSG rules to a Terraform HCL + Azure codebase.  I realized
