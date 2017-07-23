@@ -1,3 +1,4 @@
+config.jsonnet
 *_ENV.sh
 terraform.tfvars
 terraform.tfstate*

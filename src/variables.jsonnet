@@ -1,9 +1,4 @@
 {
-    // variables that are used in keys of json objects need to be evaluabed by jsonnet
-    local env = {
-        resourceGroup: std.extVar("rg"),
-        vnetName: std.extVar("rg"),
-    },
 
     variable: {
         subscriptionId: { default: std.extVar("ARM_SUBSCRIPTION_ID") },

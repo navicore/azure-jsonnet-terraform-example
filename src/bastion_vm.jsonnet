@@ -1,30 +1,26 @@
+local config = import "../config.jsonnet";
 {
-    // variables that are used in keys of json objects need to be evaluabed by jsonnet
-    local env = {
-        resourceGroup: std.extVar("rg"),
-        vnetName: std.extVar("rg"),
-    },
 
     resource: {
 
         azurerm_public_ip: {
             bastion: {
-                name: env.resourceGroup + "-bastion-pip",
+                name: config.env.resourceGroup + "-bastion-pip",
                 location: "${var.location}",
-                resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
+                resource_group_name: "${azurerm_resource_group." + config.env.resourceGroup + ".name}",
                 public_ip_address_allocation: "static",
-                domain_name_label: env.resourceGroup + "-bastion",
+                domain_name_label: config.env.resourceGroup + "-bastion",
             },
         },
 
         azurerm_network_interface: {
             "bastion-nic": {
-                name: env.resourceGroup + "-bastion-nic",
+                name: config.env.resourceGroup + "-bastion-nic",
                 location: "${var.location}",
-                resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
+                resource_group_name: "${azurerm_resource_group." + config.env.resourceGroup + ".name}",
                 network_security_group_id: "${azurerm_network_security_group.bastion_nsg.id}",
                 ip_configuration: [{
-                    name: env.resourceGroup + "-bastion",
+                    name: config.env.resourceGroup + "-bastion",
                     private_ip_address_allocation: "static",
                     private_ip_address: "10.0.1.5",
                     subnet_id: "${azurerm_subnet.bastion_subnet.id}",
@@ -36,9 +32,9 @@
 
         azurerm_virtual_machine: {
             bastion: {
-                name: "${azurerm_resource_group." + env.resourceGroup + ".name}-bastion",
+                name: "${azurerm_resource_group." + config.env.resourceGroup + ".name}-bastion",
                 location: "${var.location}",
-                resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
+                resource_group_name: "${azurerm_resource_group." + config.env.resourceGroup + ".name}",
                 network_interface_ids: ["${azurerm_network_interface.bastion-nic.id}"],
                 vm_size: "Standard_D11_V2",
                 delete_os_disk_on_termination: true,
@@ -55,14 +51,14 @@
                     },
 
                 storage_os_disk: {
-                    name: "${azurerm_resource_group." + env.resourceGroup + ".name}-bastion",
-                    vhd_uri: "${azurerm_storage_account." + env.resourceGroup + ".primary_blob_endpoint}${azurerm_storage_container." + env.resourceGroup + ".name}/bastion_os_disk.vhd",
+                    name: "${azurerm_resource_group." + config.env.resourceGroup + ".name}-bastion",
+                    vhd_uri: "${azurerm_storage_account." + config.env.resourceGroup + ".primary_blob_endpoint}${azurerm_storage_container." + config.env.resourceGroup + ".name}/bastion_os_disk.vhd",
                     caching: "ReadWrite",
                     create_option: "FromImage",
                 },
 
                 os_profile: {
-                    computer_name: "${azurerm_resource_group." + env.resourceGroup + ".name}-bastion",
+                    computer_name: "${azurerm_resource_group." + config.env.resourceGroup + ".name}-bastion",
                     admin_username: "${var.vm_user}",
                     admin_password: "${uuid()}",
                 },
