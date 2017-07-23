@@ -21,9 +21,17 @@ export ARM_CLIENT_SECRET=
 export ARM_TENANT_ID=
 ```
 
-```console
-jsonnet -V ARM_CLIENT_ID -V ARM_CLIENT_SECRET -V ARM_TENANT_ID -V ARM_SUBSCRIPTION_ID -V sa=onextentmycloud -V rg=mycloud -V location=eastus main.jsonnet > main.tf.json
-```
+* Generate (check for jsonnet errors)
+
+    ```console
+    ./build.sh
+    ```
+
+* Deploy (check for terraform and ARM errors)
+
+    ```console
+    ./deploy.sh
+    ```
 
 # TODO:
 

@@ -73,24 +73,10 @@
     // PARAMS BEGIN
     //
 
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
-    //todo replace with variable.jsonnet so that each file doesn't have to have a local env var
+    // variables that are used in keys of json objects need to be evaluabed by jsonnet
     local env = {
-        vm_user: "localadmin",
-        private_key_path: "mycloudkeys/id_rsa",
-        public_key_path: "mycloudkeys/id_rsa.pub",
-        location: std.extVar("location"),
         resourceGroup: std.extVar("rg"),
-        storageAccount: std.extVar("sa"),
         vnetName: std.extVar("rg"),
-        subscriptionId: std.extVar("ARM_SUBSCRIPTION_ID"),
     },
 
     provider: {
@@ -103,8 +89,12 @@
     },
 
     variable: {
+        subscriptionId: { default: std.extVar("ARM_SUBSCRIPTION_ID") },
+        storageAccount: { default: std.extVar("sa") },
+        location: { default: std.extVar("location") },
         private_key_path: { default: "~/mycloudkeys/id_rsa" },
         public_key_path: { default: "~/mycloudkeys/id_rsa.pub" },
+        vm_user: { default: "localadmin" },
     },
 
     //
@@ -115,7 +105,7 @@
         azurerm_resource_group: {
             [env.resourceGroup]: {
                 name: env.resourceGroup,
-                location: env.location,
+                location: "${var.location}",
             },
         },
 
@@ -124,7 +114,7 @@
             [env.vnetName]: {
                 name: env.resourceGroup,
                 resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
-                location: env.location,
+                location: "${var.location}",
                 address_space: ["10.0.0.0/8"],
             },
         },
@@ -132,7 +122,7 @@
         azurerm_network_security_group: {
             [sn + "_nsg"]: {
                 name: env.resourceGroup + "-" + sn + "-nsg",
-                location: env.location,
+                location: "${var.location}",
                 resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
                 security_rule: specs[sn].allowIn,
             } for sn in subnets
@@ -152,9 +142,9 @@
         // begin storage
         azurerm_storage_account: {
             [env.resourceGroup]: {
-                name: env.storageAccount,
+                name: "${var.storageAccount}",
                 resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
-                location: env.location,
+                location: "${var.location}",
                 account_type: "Standard_LRS",
             },
         },
@@ -185,7 +175,7 @@
         azurerm_public_ip: {
             bastion: {
                 name: env.resourceGroup + "-bastion-pip",
-                location: env.location,
+                location: "${var.location}",
                 resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
                 public_ip_address_allocation: "static",
                 domain_name_label: env.resourceGroup + "-bastion",
@@ -195,7 +185,7 @@
         azurerm_network_interface: {
             "bastion-nic": {
                 name: env.resourceGroup + "-bastion-nic",
-                location: env.location,
+                location: "${var.location}",
                 resource_group_name: "${azurerm_resource_group." + env.resourceGroup + ".name}",
                 network_security_group_id: "${azurerm_network_security_group.bastion_nsg.id}",
                 ip_configuration: [{
@@ -238,21 +228,21 @@
 
                 os_profile: {
                     computer_name: "${azurerm_resource_group." + env.resourceGroup + ".name}-bastion",
-                    admin_username: env.vm_user,
+                    admin_username: "${var.vm_user}",
                     admin_password: "${uuid()}",
                 },
 
                 os_profile_linux_config: {
                     disable_password_authentication: true,
                     ssh_keys: {
-                        path: "/home/" + env.vm_user + "/.ssh/authorized_keys",
+                        path: "/home/${var.vm_user}/.ssh/authorized_keys",
                         key_data: "${file(var.public_key_path)}",
                     },
                 },
 
                 connection: {
                     host: "${azurerm_public_ip.bastion.fqdn}",
-                    user: env.vm_user,
+                    user: "${var.vm_user}",
                     private_key: "${file(var.private_key_path)}",
                 },
 
@@ -274,7 +264,7 @@
     data: {
         template_file: {
             bastion: {
-                template: "${file(\"files/install.sh\")}",
+                template: "${file(\"../files/install.sh\")}",
                 vars: {
                 },
             },
