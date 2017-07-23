@@ -29,7 +29,7 @@ subnets, network security groups,  and a bastion host.
 
 The above steps generate this network:
 
-![PlantUML](docs/seq-mycloudexample.png)
+![PlantUML](docs/seq-mycloude.png)
 
 Above diagram created by [azuml](https://github.com/navicore/azuml)
 
