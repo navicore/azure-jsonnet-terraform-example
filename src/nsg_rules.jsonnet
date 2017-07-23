@@ -11,7 +11,7 @@
         destination_address_prefix: dstAddrPref,
 
     },
-    rule_allow_ssh_bastion(dstAddrPref, srcAddrPref): {
+    rule_allow_ssh(dstAddrPref, srcAddrPref): {
         name: "allow_ssh_in_from_bastion",
         priority: 110,
         direction: "Inbound",
