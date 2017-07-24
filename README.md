@@ -35,13 +35,18 @@ Above diagram created by [azuml](https://github.com/navicore/azuml).
 
 # WHY
 
-I recently had to add a lot of NSG rules to a Terraform HCL + Azure codebase.  I realized
-I had to learn HCL much better to make the code more maintainable or find a new way to
-express the rules.  I considered two options, writing a code generator app that wrote HCL from a
-config file - ie: making my own DSL, or try [jsonnet](http://jsonnet.org/).  jsonnet met my needs and I can use it
-for other purposes such as Kubernetes yaml.
+I recently had to add a lot of NSG rules to a Terraform HCL + Azure project.
+The resulting HCL was verbose and riddled with rule name and rule priority
+conflicts.
 
-The Terraform tool is still extremely valuable without HCL.  While I don't use any HCL language
-features in this demo, I do use Terraform interpolation syntax for resolving the
-"not known until deployment" attributes.
+I realized I had to invest more of my time to learn HCL better to make the code
+correct and maintainable or find a new way to express the rules.  I considered
+three options: work smarter with HCL, write a code generator app that wrote HCL
+from a config file - ie: create my own DSL, or try
+[jsonnet](http://jsonnet.org/).  jsonnet met my needs and I can use it for
+other purposes such as creating Kubernetes yaml.
+
+The Terraform tool is still extremely valuable without HCL.  While I don't use
+any HCL language features in this demo, I do use Terraform interpolation syntax
+for resolving the "not known until deployment" attributes.
 
