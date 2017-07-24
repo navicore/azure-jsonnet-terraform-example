@@ -1,4 +1,8 @@
 {
+
+    // some insanity to generate unique priority within an nsg
+    local priority200 = function(seed) std.mod(std.foldr(function(acc, x) acc + x, std.map(function(x) std.codepoint(x), std.stringChars(seed)), 0), 100) + 200,
+
     rule_allow_ssh_inet(dstAddrPref): {
         name: "allow_ssh_in_from_inet",
         priority: 100,
@@ -9,7 +13,6 @@
         destination_port_range: "22",
         source_address_prefix: "INTERNET",
         destination_address_prefix: dstAddrPref,
-
     },
     rule_allow_ssh(dstAddrPref, srcAddrPref): {
         name: "allow_ssh_in_from_bastion",
@@ -23,8 +26,8 @@
         destination_address_prefix: dstAddrPref,
     },
     rule_allow_etcd_2379_inbound(dstAddrPref, srcAddrPref): {
-        name: "allow_etcd_2379_inbound",
-        priority: 201,
+        name: "allow_etcd_2379_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -34,8 +37,8 @@
         destination_address_prefix: dstAddrPref,
     },
     rule_allow_etcd_2380_inbound(dstAddrPref, srcAddrPref): {
-        name: "allow_etcd_2380_inbound",
-        priority: 202,
+        name: "allow_etcd_2380_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -44,9 +47,9 @@
         source_address_prefix: srcAddrPref,
         destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_cAdvisor_4194_inbound(srcAddrPref): {
-        name: "allow_k8s_cAdvisor_4194_inbound",
-        priority: 203,
+    rule_allow_k8s_cAdvisor_inbound(srcAddrPref): {
+        name: "allow_k8s_cAdvisor_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -56,8 +59,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_https_inbound(srcAddrPref): {
-        name: "allow_k8s_https_inbound",
-        priority: 204,
+        name: "allow_k8s_https_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -67,8 +70,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_http_inbound(srcAddrPref): {
-        name: "allow_k8s_http_inbound",
-        priority: 205,
+        name: "allow_k8s_http_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -78,8 +81,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_http_8080_inbound(srcAddrPref): {
-        name: "allow_k8s_http_8080_inbound",
-        priority: 206,
+        name: "allow_k8s_http_8080_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -89,8 +92,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_http_8081_inbound(srcAddrPref): {
-        name: "allow_k8s_http_8081_inbound",
-        priority: 206,
+        name: "allow_k8s_http_8081_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -100,8 +103,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_http_8082_inbound(srcAddrPref): {
-        name: "allow_k8s_http_8082_inbound",
-        priority: 206,
+        name: "allow_k8s_http_8082_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -111,8 +114,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_http_8083_inbound(srcAddrPref): {
-        name: "allow_k8s_http_8083_inbound",
-        priority: 206,
+        name: "allow_k8s_http_8083_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -122,8 +125,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_dns_inbound(srcAddrPref): {
-        name: "allow_k8s_dns_inbound",
-        priority: 207,
+        name: "allow_k8s_dns_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -133,8 +136,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_dashboard_inbound(srcAddrPref): {
-        name: "allow_k8s_dashboard_inbound",
-        priority: 208,
+        name: "allow_k8s_dashboard_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -145,7 +148,7 @@
     },
     rule_allow_k8s_kubelet_10250_inbound(srcAddrPref): {
         name: "allow_k8s_kubelet_10250_inbound",
-        priority: 208,
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -155,8 +158,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_kubelet_10255_inbound(srcAddrPref): {
-        name: "allow_k8s_kubelet_10255_inbound",
-        priority: 208,
+        name: "allow_k8s_kubelet_10255_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -166,8 +169,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_k8s_kubedns_inbound(srcAddrPref): {
-        name: "allow_k8s_kubedns_inbound",
-        priority: 208,
+        name: "allow_k8s_kubedns_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -177,8 +180,8 @@
         destination_address_prefix: "10.244.0.0/16",
     },
     rule_allow_cassandra_inbound(dstAddrPref, srcAddrPref): {
-        name: "allow_cassandra_inbound",
-        priority: 208,
+        name: "allow_cassandra_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
         direction: "Inbound",
         access: "Allow",
         protocol: "Tcp",
@@ -187,10 +190,20 @@
         source_address_prefix: srcAddrPref,
         destination_address_prefix: dstAddrPref,
     },
-
+    rule_allow_https_inbound(dstAddrPref, srcAddrPref): {
+        name: "allow_https_from_" + std.split(srcAddrPref, "/")[0],
+        priority: priority200(self.name),
+        direction: "Inbound",
+        access: "Allow",
+        protocol: "Tcp",
+        source_port_range: "*",
+        destination_port_range: "443",
+        source_address_prefix: srcAddrPref,
+        destination_address_prefix: dstAddrPref,
+    },
     rule_deny_all: {
         name: "deny_all_inbound",
-        priority: 300,
+        priority: 500,
         direction: "Inbound",
         access: "Deny",
         protocol: "*",
