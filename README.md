@@ -17,7 +17,7 @@ subnets, network security groups,  and a bastion host.
     export ARM_CLIENT_SECRET=
     export ARM_TENANT_ID=
     ```
-1. Create `config.jsonnet` by copying and editing `config.example.jsonnet`
+1. Create `config.jsonnet` by copying and editing `config.bastion.example.jsonnet`
 1. Generate Terraform JSON
     ```console
     ./build.sh
