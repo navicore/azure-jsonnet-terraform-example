@@ -70,6 +70,8 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
             allowIn: [
                 nsg_rules.rule_allow_http_8080_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
                 nsg_rules.rule_allow_k8s_https_inbound(config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_k8s_https_inbound(config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_https_inbound(config.specs.private_nodes.addressPrefix),
                 nsg_rules.rule_allow_k8s_kubedns_inbound(config.specs.public_nodes.addressPrefix),
                 nsg_rules.rule_allow_k8s_kubedns_inbound(config.specs.private_nodes.addressPrefix),
                 nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
