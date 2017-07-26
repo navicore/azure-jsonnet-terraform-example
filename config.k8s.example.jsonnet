@@ -31,11 +31,11 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         private_nodes: {
             addressPrefix: "10.0.2.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_k8s_http_inbound(config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_cAdvisor_inbound(config.specs.cicd.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(config.specs.cicd.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(config.specs.cicd.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_k8s_http_inbound(200, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_cAdvisor_inbound(201, config.specs.cicd.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(202, config.specs.cicd.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(203, config.specs.cicd.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -44,10 +44,10 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         public_nodes: {
             addressPrefix: "10.0.3.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_k8s_cAdvisor_inbound(config.specs.cicd.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(config.specs.cicd.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(config.specs.cicd.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_k8s_cAdvisor_inbound(200, config.specs.cicd.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(201, config.specs.cicd.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(202, config.specs.cicd.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -56,10 +56,10 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         database: {
             addressPrefix: "10.0.4.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_https_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_cassandra_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_cassandra_inbound(self.addressPrefix, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_https_inbound(200, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_cassandra_inbound(201, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_cassandra_inbound(202, self.addressPrefix, config.specs.private_nodes.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -68,24 +68,25 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         cicd: {
             addressPrefix: "10.0.5.0/24",
             allowIn: [
-                nsg_rules.rule_allow_http_8080_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
 
-                nsg_rules.rule_allow_https_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_https_inbound(self.addressPrefix, config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_https_inbound(self.addressPrefix, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_http_8080_inbound(200, self.addressPrefix, config.specs.bastion.addressPrefix),
 
-                nsg_rules.rule_allow_k8s_kubedns_inbound(config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubedns_inbound(config.specs.private_nodes.addressPrefix),
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_etcd_2379_inbound(self.addressPrefix, config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_etcd_2380_inbound(self.addressPrefix, config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_etcd_2379_inbound(self.addressPrefix, config.specs.private_nodes.addressPrefix),
-                nsg_rules.rule_allow_etcd_2380_inbound(self.addressPrefix, config.specs.private_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(config.specs.private_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(config.specs.private_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(config.specs.public_nodes.addressPrefix),
-                nsg_rules.rule_allow_k8s_dashboard_inbound(config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_https_inbound(201, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_https_inbound(202, self.addressPrefix, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_https_inbound(203, self.addressPrefix, config.specs.private_nodes.addressPrefix),
+
+                nsg_rules.rule_allow_k8s_kubedns_inbound(204, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubedns_inbound(205, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_etcd_2379_inbound(206, self.addressPrefix, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_etcd_2380_inbound(207, self.addressPrefix, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_etcd_2379_inbound(208, self.addressPrefix, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_etcd_2380_inbound(209, self.addressPrefix, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(210, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(211, config.specs.private_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10250_inbound(212, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_kubelet_10255_inbound(213, config.specs.public_nodes.addressPrefix),
+                nsg_rules.rule_allow_k8s_dashboard_inbound(214, config.specs.bastion.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [

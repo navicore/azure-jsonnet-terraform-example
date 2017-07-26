@@ -22,7 +22,7 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         bastion: {
             addressPrefix: "10.0.1.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh_inet(self.addressPrefix),
+                nsg_rules.rule_allow_ssh_inet(100, self.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -31,7 +31,7 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         private_nodes: {
             addressPrefix: "10.0.2.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -40,7 +40,7 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         public_nodes: {
             addressPrefix: "10.0.3.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -49,8 +49,8 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         database: {
             addressPrefix: "10.0.4.0/24",
             allowIn: [
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_https_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_https_inbound(200, self.addressPrefix, config.specs.bastion.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
@@ -59,8 +59,8 @@ local nsg_rules = import "src/nsg_rules.jsonnet";
         cicd: {
             addressPrefix: "10.0.5.0/24",
             allowIn: [
-                nsg_rules.rule_allow_http_8080_inbound(self.addressPrefix, config.specs.bastion.addressPrefix),
-                nsg_rules.rule_allow_ssh(self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_ssh(100, self.addressPrefix, config.specs.bastion.addressPrefix),
+                nsg_rules.rule_allow_http_8080_inbound(200, self.addressPrefix, config.specs.bastion.addressPrefix),
                 nsg_rules.rule_deny_all,
             ],
             allowOut: [
