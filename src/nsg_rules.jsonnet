@@ -44,7 +44,7 @@
         source_address_prefix: srcAddrPref,
         destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_cAdvisor_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_cAdvisor_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_cAdvisor_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -53,9 +53,9 @@
         source_port_range: "*",
         destination_port_range: "4194",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_https_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_https_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_https_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -64,9 +64,9 @@
         source_port_range: "*",
         destination_port_range: "443",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_http_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_http_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_http_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -75,9 +75,9 @@
         source_port_range: "*",
         destination_port_range: "80",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_http_8080_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_http_8080_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_http_8080_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -86,9 +86,9 @@
         source_port_range: "*",
         destination_port_range: "8080",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_http_8081_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_http_8081_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_http_8081_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -97,9 +97,9 @@
         source_port_range: "*",
         destination_port_range: "8081",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_http_8082_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_http_8082_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_http_8082_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -108,9 +108,9 @@
         source_port_range: "*",
         destination_port_range: "8082",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_http_8083_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_http_8083_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_http_8083_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -119,9 +119,9 @@
         source_port_range: "*",
         destination_port_range: "8083",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_dns_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_dns_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_dns_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -130,9 +130,9 @@
         source_port_range: "*",
         destination_port_range: "53",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_dashboard_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_dashboard_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_dashboard_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -141,9 +141,9 @@
         source_port_range: "*",
         destination_port_range: "9090",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_kubelet_10250_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_kubelet_10250_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_kubelet_10250_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -152,9 +152,9 @@
         source_port_range: "*",
         destination_port_range: "10250",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_kubelet_10255_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_kubelet_10255_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_kubelet_10255_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -163,9 +163,9 @@
         source_port_range: "*",
         destination_port_range: "10255",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
-    rule_allow_k8s_kubedns_inbound(priority, srcAddrPref): {
+    rule_allow_k8s_kubedns_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_k8s_kubedns_from_" + std.split(srcAddrPref, "/")[0],
         priority: priority,
         direction: "Inbound",
@@ -174,7 +174,7 @@
         source_port_range: "*",
         destination_port_range: "10053",
         source_address_prefix: srcAddrPref,
-        destination_address_prefix: "10.244.0.0/16",
+        destination_address_prefix: dstAddrPref,
     },
     rule_allow_cassandra_inbound(priority, dstAddrPref, srcAddrPref): {
         name: "allow_cassandra_from_" + std.split(srcAddrPref, "/")[0],
