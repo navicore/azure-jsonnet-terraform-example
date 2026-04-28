@@ -1,3 +1,8 @@
+<!-- ghmig:moved -->
+> **This repository has moved to [https://git.navicore.tech/navicore/azure-jsonnet-terraform-example](https://git.navicore.tech/navicore/azure-jsonnet-terraform-example).**
+>
+> The GitHub copy is archived and no longer maintained.
+
 Terraform with Jsonnet for Azure VNets w/ Bastion
 ---------
 
@@ -49,4 +54,3 @@ other purposes such as creating Kubernetes yaml.
 The Terraform tool is still extremely valuable without HCL.  While I don't use
 any HCL language features in this demo, I do use Terraform interpolation syntax
 for resolving the "not known until deployment" attributes.
-
